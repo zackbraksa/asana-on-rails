@@ -5,12 +5,12 @@ require 'open-uri'
 require 'openssl'
 
 
-	def asana(task,api) 
+	def asana(task,api,assignee) 
 		
 		api_key = api
-		result = JSON.parse(open("https://app.asana.com/api/1.0/workspaces", :http_basic_authentication=>[api, " "]).read)
-		workspace_id = result['data'][0]['id']
-		assignee = 'zakaria@zakaria.com'
+		result = JSON.parse(open("https://app.asana.com/api/1.0/users/me", :http_basic_authentication=>[api, " "]).read)
+		workspace_id = result['data']['workspaces'][0]["id"]
+		@assignee = result["data"]["email"]
 
 		# (source) http://developers.asana.com/documentation/ : begin
 		uri = URI.parse("https://app.asana.com/api/1.0/tasks")
@@ -29,7 +29,7 @@ require 'openssl'
 	  		"data" => {
 	   		"workspace" => workspace_id,
 	    	"name" => task,
-	   		"assignee" => assignee
+	   		"assignee" => @assignee
 	 		}
 		}.to_json()
 
@@ -37,9 +37,9 @@ require 'openssl'
 
 		body = JSON.parse(res.body)
 		if body['errors'] then
-	   		 puts "Server returned an error: #{body['errors'][0]['message']}"
+			@feedback = "There was some error."
 		else
-	  		puts "Created task with id: #{body['data']['id']}"
+	  		@feedback = "Hi " + result["data"]["name"] + " , your task was added!"
 		end
 		# (source) http://developers.asana.com/documentation/ : end 
 	end 

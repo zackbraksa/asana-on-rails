@@ -2,9 +2,8 @@
 	<div class="offset4">
 
 		<h3>Asana::Add Task</h3>
-
-		<table cellpadding="5" >
 		<%= form_tag "/pages/index" do %>
+		<table cellpadding="5" >
 			<tr>
 				<td>Task to add  </td><td><%= text_field_tag "task"  %></td>
 			</tr>
@@ -15,10 +14,8 @@
 			<tr>
 				<td colspan="2" align="right" ><%= submit_tag "Add" , :class => "btn btn-primary" %></td>
 			</tr>
-		<% end %>
 		</table>
-
+		<% end %>
 		<%= @feedback %>
-
 	</div>
 </div>
